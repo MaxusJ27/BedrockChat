@@ -1,0 +1,11 @@
+Handle all the data fetching through the individual components
+
+For dashboard, add analytics:
+number:
+1. Number of models user has access to
+2. Number of files uploaded by user
+analytics:
+1. Number of tokens for each model
+2. Costs for each model based on num tokens used
+3. Number of files based on types uploaded by user
+4. Number of files uploaded per week 

@@ -1,0 +1,6 @@
+langchain
+boto3
+tqdm
+faiss-cpu
+PyPDF2
+python-docx

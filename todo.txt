@@ -1,0 +1,19 @@
+Web Based Personalized Large Language Model using AWS (Fullstack)
+Frontend: Next.js, Tailwind 
+Backend: AWS Amplify, AWS Lambda
+
+
+Frontend:
+Allow user to login ?
+Allow user to upload files, youtube url, (?)
+Allow user to type input and submit (?)
+Allow user to select LLMs (?)
+
+Backend:
+AWS Lambda script that accepts user, pushes the vectorstore into an S3 bucket, send back the s3 bucket ID
+AWS Lambda script that POST model + prompts to the backend, with access to the current vectorstore in the bucket ID 
+
+Build up the NextJS Skeleton first
+1. Build home page
+2. Set up login (login form) and auth (nextjs auth)
+
