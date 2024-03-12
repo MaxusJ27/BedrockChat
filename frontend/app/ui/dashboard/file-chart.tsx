@@ -48,13 +48,14 @@ const FileTypeChart = () => {
 
 
     return (
-        <div className='rounded-md bg-gray-600 p-2'>
+        <div className='rounded-md bg-gray-400 p-2 h-[400px]'>
             <Bar
                 options={
                     {
+                        maintainAspectRatio: false,
                         plugins: {
                             legend: {
-                                display: false
+                                display: false,
                             },
                             title: {
                                 text: "Number of Files",

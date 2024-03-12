@@ -1,8 +1,9 @@
 'use server';
 
 import { unstable_noStore as noStore } from 'next/cache';
-import { User, File, Embedding } from '../lib/models';
+import { User, File, Model, Embedding } from '../lib/models';
 import { sql } from '@vercel/postgres';
+import { auth } from '@/auth';
 
 
 export async function fetchFiles() {
@@ -24,5 +25,23 @@ export async function fetchFileByType() {
     } catch (error) {
         console.error('Unable to fetch data: ', error);
         throw new Error('Failed to fetch files data.');
+    }
+}
+
+export async function fetchModelCosts() {
+    noStore();
+    try {
+        const session = await auth();
+        let userID;
+        if (session && session.user) {
+            userID = session.user.id;
+        } else {
+            throw new Error('Failed to obtain user ID from database');
+        }
+        const data = await sql<Model>`SELECT modelName, SUM(estimatedinput) AS "estimatedInputCosts", SUM(estimatedoutput) AS "estimatedOutputCosts", SUM(inputtoken) AS "inputToken", SUM(outputtoken) AS "outputToken" FROM models WHERE USERID=${userID} GROUP BY modelname`;
+        return data.rows;
+    } catch (error) {
+        console.error('Unable to fetch data: ', error);
+        throw new Error('Failed to fetch model costs data.');
     }
 }

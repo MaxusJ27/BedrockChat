@@ -9,7 +9,9 @@ import { sql } from '@vercel/postgres';
 import { z } from 'zod';
 // auth
 import { auth } from '@/auth';
-import { ReceiverType } from '../lib/enum';
+// lib
+import { ReceiverType, ModelCost,ModelMap } from '../lib/enum';
+
 // parse the contents of the uploaded file
 export type FileState = {
     errors?: {
@@ -174,6 +176,7 @@ export const createMessage = async (formData: FormData) => {
         };
     }
     const { message, model, file } = validatedFields.data;
+    const inputToken = (message.length / 6).toFixed(0);
 
     const faissKey = userID + '/' + file + '/' + 'index.faiss';
     const pklKey = userID + '/' + file + '/' + 'index.pkl';
@@ -191,6 +194,22 @@ export const createMessage = async (formData: FormData) => {
             });
             const result = await response.json();
             console.log(result);
+            const outputToken = (result.length / 6).toFixed(0);
+
+            const inputCost = (Number(inputToken) * Number(ModelCost[model][0])).toFixed(6);
+            const outputCost = (Number(outputToken) * Number(ModelCost[model][1])).toFixed(6);
+
+            const modelName = ModelMap.find((item) => item.keyword === model).name;
+            console.log(inputCost, outputCost, modelName);
+            try {
+                console.log('Inserting into database');
+                await sql`
+                INSERT INTO models (userID, modelName, inputToken, outputToken, estimatedInput, estimatedOutput, date)
+                VALUES (${userID}, ${modelName}, ${inputToken}, ${outputToken}, ${inputCost}, ${outputCost}, ${new Date().toISOString().split('T')[0]})`
+                console.log('Inserted into database');
+            } catch (error) {
+                console.error('Error inserting into database', error);
+            }
         
             return {
                 message: result,
@@ -202,7 +221,7 @@ export const createMessage = async (formData: FormData) => {
                 message: 'Failed to send message. Please try again.',
                 receiver: ReceiverType.BOT,
             };
-        }
+        } 
     } else {
         console.error('URL is undefined');
         return {

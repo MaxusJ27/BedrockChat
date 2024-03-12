@@ -1,9 +1,9 @@
 console.log('Start seeding...');
-const {
-    users,
-    files,
-    embeddings
-} = require('../app/data/index');
+// const {
+//     users,
+//     files,
+//     embeddings
+// } = require('../app/data/index');
 const { db } = require('@vercel/postgres');
 const bcrypt = require('bcrypt');
 async function seedUsers(client) {
@@ -117,7 +117,7 @@ async function seedEmbeddings(client) {
     }
 }
 
-async function seedModels(client){
+async function seedModels(client) {
     try {
         await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
         await client.sql`DROP TABLE IF EXISTS models CASCADE;`;
@@ -125,23 +125,30 @@ async function seedModels(client){
         const createTable = await client.sql`
         CREATE TABLE IF NOT EXISTS models (
           id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-          user_id UUID REFERENCES users(id),
-          file_name TEXT NOT NULL,
+          userID VARCHAR(50) NOT NULL,
+          modelName VARCHAR(50) NOT NULL,
+          inputToken INT NOT NULL,
+          outputToken INT NOT NULL,
+          estimatedInput FLOAT NOT NULL,
+            estimatedOutput FLOAT NOT NULL,
           date DATE NOT NULL DEFAULT CURRENT_DATE
         );
         `;
 
         console.log("Created 'models' table");
-        const insertedModels = await Promise.all(
-            embeddings.map(async (model) => {
-                return client.sql`
-          INSERT INTO models (user_id, file_name, date)
-          VALUES (${model.user_id}, ${model.file_name}, ${model.date})
-          ON CONFLICT (id) DO NOTHING;
-        `;
-            }),
-        );
-        console.log(`Seeded ${insertedModels.length} models`);
+        return {
+            createTable
+        };
+        // const insertedModels = await Promise.all(
+        //     embeddings.map(async (model) => {
+        //         return client.sql`
+        //   INSERT INTO models (user_id, file_name, date)
+        //   VALUES (${model.user_id}, ${model.file_name}, ${model.date})
+        //   ON CONFLICT (id) DO NOTHING;
+        // `;
+        //     }),
+        // );
+        // console.log(`Seeded ${insertedModels.length} models`);
     } catch (error) {
         console.error('Error seeding models:', error);
         throw error;
@@ -151,8 +158,8 @@ async function seedModels(client){
 async function main() {
     const client = await db.connect();
     // await seedUsers(client);
-    await seedFiles(client);
-    // await seedEmbeddings(client);
+    // await seedFiles(client);
+    await seedModels(client);
 
     await client.end()
 }

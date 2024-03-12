@@ -19,6 +19,15 @@ export type Embedding = {
     date: Date,
 };
 
+
+export type Model = {
+    id: string, 
+    modelname: string,
+    inputToken: string,
+    outputToken: string,
+    estimatedInputCosts: number,
+    estimatedOutputCosts: number,
+}
 export type Select = {
     name: string;
     keyword: string;

@@ -2,6 +2,7 @@
 
 import { Select } from "@/app/lib/models";
 
+import { ModelMap } from "@/app/lib/enum";
 
 interface SelectedModel {
     selectedModel: string;
@@ -10,16 +11,7 @@ interface SelectedModel {
 
 
 const SelectModel = ({ selectedModel, setSelectedModel }: SelectedModel) => {
-    const modelList: Select[] = [
-        { name: 'Amazon Titan G1 - Lite', keyword: 'amazon.titan-text-lite-v1' },
-        { name: 'Amazon Titan G1 - Express', keyword: 'amazon.titan-text-express-v1' },
-        { name: 'Jurassic-2 Mid', keyword: 'ai21.j2-mid-v1' },
-        { name: 'Jurassic-2 Ultra', keyword: 'ai21.j2-ultra-v1' },
-        { name: 'Cohere Command Light', keyword: 'cohere.command-light-text-v14' },
-        { name: 'Cohere Command', keyword: 'cohere.command-text-v14' },
-        { name: 'Llama 2 Chat 13B', keyword: 'meta.llama2-13b-chat-v1' },
-        { name: 'Llama 2 Chat 70B', keyword: 'meta.llama2-70b-chat-v1' },
-    ];
+    const modelList: Select[] = ModelMap;
     const handleSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedModel(event.target.value);
     }
