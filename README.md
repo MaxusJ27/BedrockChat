@@ -16,13 +16,14 @@ Current supported files: docx, pdf.
 
 Current look:
 <p align="center">
-    <img src="./current_look.gif" />
+    <img src="./compressed_bedrock_example.gif" />
 </p>
 
 - [x] User authentication using NextJS.
 - [x] Frontend screens for login, dashboard, chatbot and files.
 - [x] Lambda endpoint to store FAISS embeddings in S3 bucket.
 - [x] Lambda endpoint to enable user to chat with RAG model by retrieving stored embeddings as context.
+- [] Fix overall UI/UX design, add skeleteon components for React suspense loading. 
 - [] Enable user to query about more than one unrelated files at once.
 - [] Implement a more [production-ready RAG](https://docs.llamaindex.ai/en/stable/optimizing/production_rag.html).
 
