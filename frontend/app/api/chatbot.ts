@@ -127,15 +127,15 @@ export const createEmbedding = async (prevState: FileState, formData: FormData) 
         console.log(data);
 
         const date = new Date().toISOString().split('T')[0];
-
-        const generatedID = '3958dc9e-712f-4377-85e9-fec4b6a6442d';
-
-        await sql`
-            INSERT INTO files (id, name, type, date)
-            VALUES (${generatedID}, ${name}, ${fileType}, ${date})
-            ON CONFLICT (id) DO NOTHING;
-            `;
-        console.log('Successfully inserted file into database');
+        try {
+            await sql`
+                INSERT INTO files ( name, type, date)
+                VALUES ( ${name}, ${fileType}, ${date})
+                `;
+                console.log('Successfully inserted file into database');
+        } catch (error) {
+            console.error(`Failed to insert into database: ${error}`);
+        }
 
     } catch (error) {
         console.error('Error sending request to API Gateway', error);
@@ -146,7 +146,6 @@ export const createEmbedding = async (prevState: FileState, formData: FormData) 
         };
     } finally {
         revalidatePath('/dashboard/files');
-        // why redirect not working lol
         redirect('/dashboard/files');
     }
 }

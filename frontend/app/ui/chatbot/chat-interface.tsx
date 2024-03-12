@@ -64,13 +64,13 @@ const ChatInterface = ({ selectedModel, selectedFile }: { selectedModel: string,
                     type="text"
                     id="chatbot"
                     name="chatbot"
-                    className='text-black w-full px-2 rounded-md'
+                    className='bg-gray-600 text-white w-full px-2 rounded-md'
                     onChange={(e: any) => {
                         setValue(e.target.value);
                     }}
                 />
                 <Button type="submit" disabled={loading} onClick={(event) => { sendMessage(event) }}
-                    className={clsx('w-auto px-10 py-2 ',
+                    className={clsx('flex flex-row space-x-2.5 w-auto px-10 py-2 ',
                         { loading: 'shadow-none cursor-not-allowed text-orange-500 bg-gray-500' }
                     )}
                 >Submit <ChatBubbleBottomCenterTextIcon className='text-white w-6 h-6' /></Button>

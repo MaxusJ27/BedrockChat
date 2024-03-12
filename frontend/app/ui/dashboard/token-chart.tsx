@@ -65,12 +65,12 @@ const TokenChart = () => {
                             {
                                 label: 'Number of Input Tokens',
                                 data: modelData.map((item) => item.inputToken ),
-                                backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                                backgroundColor: 'rgba(255, 159, 64, 1)',
                             },
                             {
                                 label: 'Number of Output Tokens',
                                 data: modelData.map((item) => item.outputToken),
-                                backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                                backgroundColor: 'rgba(153, 102, 255, 1)',
                             }
                         ]
                     }
